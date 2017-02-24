@@ -1,6 +1,12 @@
 {
-  "main.css": "static/css/main.0c5dad92.css",
-  "main.css.map": "static/css/main.0c5dad92.css.map",
-  "main.js": "static/js/main.221ce619.js",
-  "main.js.map": "static/js/main.221ce619.js.map"
+  "main.css": "static/css/main.520d693e.css",
+  "main.css.map": "static/css/main.520d693e.css.map",
+  "main.js": "static/js/main.f519ada2.js",
+  "main.js.map": "static/js/main.f519ada2.js.map",
+  "static/media/YaldeviColombo-Bold.ttf": "static/media/YaldeviColombo-Bold.086cf681.ttf",
+  "static/media/YaldeviColombo-ExtraLight.ttf": "static/media/YaldeviColombo-ExtraLight.ccba7e4f.ttf",
+  "static/media/YaldeviColombo-Light.ttf": "static/media/YaldeviColombo-Light.85fbac5c.ttf",
+  "static/media/YaldeviColombo-Medium.ttf": "static/media/YaldeviColombo-Medium.1ddf85f2.ttf",
+  "static/media/YaldeviColombo-Regular.ttf": "static/media/YaldeviColombo-Regular.9b9f58a1.ttf",
+  "static/media/YaldeviColombo-SemiBold.ttf": "static/media/YaldeviColombo-SemiBold.5a9e0b62.ttf"
 }
