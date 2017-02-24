@@ -17,9 +17,11 @@
     "boron": "^0.2.3",
     "firebase": "^3.6.10",
     "node-sass": "^4.5.0",
+    "notie": "^3.9.5",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-dropzone": "^3.11.0",
+    "react-progress-button": "^5.0.1",
     "uuid": "^3.0.1"
   },
   "scripts": {

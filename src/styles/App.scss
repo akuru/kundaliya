@@ -82,6 +82,7 @@ body {
   }
 
   .dropzone {
+    cursor: pointer;
     border: 2px dashed #EA2E49;
     padding: 20px;
     margin-top: 19px;
@@ -130,8 +131,10 @@ body {
     }
 
     .upload {
-      border: 2px solid #F6F792;
-      color: #F6F792;
+      button {
+        border: 2px solid #F6F792;
+        color: #F6F792;
+      }
     }
 
     .clear {

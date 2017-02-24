@@ -3967,6 +3967,10 @@ normalize-url@^1.4.0:
     query-string "^4.1.0"
     sort-keys "^1.0.0"
 
+notie@^3.9.5:
+  version "3.9.5"
+  resolved "https://registry.yarnpkg.com/notie/-/notie-3.9.5.tgz#dd203c3a7210207fc9838c777c40953532577aa5"
+
 npm-run-all@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/npm-run-all/-/npm-run-all-4.0.2.tgz#a84669348e6db6ccbe052200b4cdb6bfe034a4fe"
@@ -4666,6 +4670,10 @@ react-dropzone@^3.11.0:
 react-is-deprecated@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/react-is-deprecated/-/react-is-deprecated-0.1.2.tgz#301148f86ea428fe8e673eca7a372160b7579dbd"
+
+react-progress-button@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/react-progress-button/-/react-progress-button-5.0.1.tgz#a2ceb90bd6916db04007078e17926e4f2bde1da5"
 
 react-scripts@0.9.0:
   version "0.9.0"

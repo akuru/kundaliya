@@ -3,6 +3,8 @@ import * as firebase from 'firebase';
 import Modal from 'boron/OutlineModal';
 import Dropzone from 'react-dropzone';
 import uuid from 'uuid/v4';
+import ProgressButton from 'react-progress-button';
+import notie from 'notie';
 
 class App extends Component {
   constructor(props) {
@@ -10,7 +12,8 @@ class App extends Component {
 
     this.state = {
       user: null,
-      droppedFiles: []
+      droppedFiles: [],
+      uploading: ''
     };
 
     this.googleSignIn = this.googleSignIn.bind(this);
@@ -19,6 +22,7 @@ class App extends Component {
     this.renderFilePreviews = this.renderFilePreviews.bind(this);
     this.clearDrop = this.clearDrop.bind(this);
     this.uploadFiles = this.uploadFiles.bind(this);
+    this.signOut = this.signOut.bind(this);
   }
 
   componentDidMount() {
@@ -51,6 +55,20 @@ class App extends Component {
         }
       });
     }).catch(() => {
+      this.refs.errorBox.show();
+    });
+  }
+
+  signOut() {
+    firebase.auth().signOut().then(() => {
+      notie.alert(1, 'Successfully Signed Out!', 5);
+
+      this.setState({
+        user: null,
+        droppedFiles: [],
+        uploading: ''
+      });
+    }, () => {
       this.refs.errorBox.show();
     });
   }
@@ -93,35 +111,51 @@ class App extends Component {
   uploadFiles() {
     const { droppedFiles, user } = this.state;
 
-    const storageRef = firebase.storage().ref();
-    const fileName = `${user.uid}-${uuid()}`;
-
-    droppedFiles.forEach((file) => {
-      // Create a reference to 'mountains.jpg'
-      const fileRef = storageRef.child(fileName);
-
-    //  const fileToUpload = Object.assign({}, file, {name: fileName} );
-
-      // var file = file;
-      fileRef.put(file).then((snapshot) => {
-        if (snapshot) {
-          const database = firebase.database();
-
-          database.ref(`uploads/${user.uid}`).set({
-            username: user.name,
-            email: user.email,
-            fileName,
-            filePath: snapshot.a.fullPath,
-            downloadURLs: snapshot.a.downloadURLs,
-            downloadURL: snapshot.a.downloadURLs[0]
-          });
-        }
+    if (droppedFiles.length !== 0) {
+      this.setState({
+        uploading: 'loading'
       });
-    });
+
+      const storageRef = firebase.storage().ref();
+      const fileName = `${user.uid}-${uuid()}`;
+
+      droppedFiles.forEach((file) => {
+        // Create a reference to 'mountains.jpg'
+        const fileRef = storageRef.child(fileName);
+
+      //  const fileToUpload = Object.assign({}, file, {name: fileName} );
+
+        // var file = file;
+        fileRef.put(file).then((snapshot) => {
+          this.setState({
+            uploading: '',
+            droppedFiles: []
+          });
+
+
+          if (snapshot.a) {
+            const database = firebase.database();
+
+            database.ref(`uploads/${user.uid}`).set({
+              username: user.name,
+              email: user.email,
+              fileName,
+              filePath: snapshot.a.fullPath,
+              downloadURLs: snapshot.a.downloadURLs,
+              downloadURL: snapshot.a.downloadURLs[0]
+            });
+
+            notie.alert(1, 'Files uploaded successfully!', 5);
+          } else {
+            this.refs.errorBox.show();
+          }
+        });
+      });
+    }
   }
 
   render() {
-    const { user, droppedFiles } = this.state;
+    const { user, droppedFiles, uploading } = this.state;
     return (
       <div className="App">
         <div className="main-content">
@@ -183,16 +217,21 @@ class App extends Component {
               </Dropzone>
               <br />
               <div className="drop-actions">
-                <button className="upload" onClick={this.uploadFiles}>Upload</button>
+                <ProgressButton
+                  onClick={this.uploadFiles}
+                  state={uploading}
+                  className="upload"
+                >
+                  Upload
+                </ProgressButton>
                 <button className="clear" onClick={this.clearDrop}>Clear</button>
               </div>
               <div className="session-actions">
-                <button className="logout">Logout</button>
+                <button className="logout" onClick={this.signOut}>Logout</button>
               </div>
             </div>
           }
         </div>
-
         <Modal
           ref="errorBox"
           keyboard={this.callback}
