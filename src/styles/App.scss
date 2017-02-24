@@ -32,6 +32,7 @@ body {
 
   .kunadliya-description {
     max-width: 786px;
+    margin: auto;
   }
 
   .kundaliya {
@@ -77,6 +78,36 @@ body {
       &.github {
         border: 2px solid #111111;
       }
+    }
+  }
+
+  .dropzone {
+    border: 2px dashed #EA2E49;
+    padding: 20px;
+    margin-top: 19px;
+    min-height: 152px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+
+    .file-preview {
+      width: 120px;
+      margin: 6px;
+
+      img {
+        width: 100%;
+      }
+    }
+
+    p {
+      text-align: center;
+      margin: auto;
     }
   }
 }

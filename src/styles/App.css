@@ -27,7 +27,8 @@ body {
   font-size: 2.5rem; }
 
 .main-content .kunadliya-description {
-  max-width: 786px; }
+  max-width: 786px;
+  margin: auto; }
 
 .main-content .kundaliya {
   font-size: 3rem;
@@ -64,6 +65,32 @@ body {
 
 .main-content .signin-container .signin-btn.github {
   border: 2px solid #111111; }
+
+.main-content .dropzone {
+  border: 2px dashed #EA2E49;
+  padding: 20px;
+  margin-top: 19px;
+  min-height: 152px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap; }
+
+.main-content .dropzone .file-preview {
+  width: 120px;
+  margin: 6px; }
+
+.main-content .dropzone .file-preview img {
+  width: 100%; }
+
+.main-content .dropzone p {
+  text-align: center;
+  margin: auto; }
 
 .error-box {
   color: #333745;

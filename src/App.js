@@ -1,17 +1,21 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import Modal from 'boron/OutlineModal';
+import Dropzone from 'react-dropzone';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      user: null
+      user: {},
+      droppedFiles: []
     };
 
     this.googleSignIn = this.googleSignIn.bind(this);
-    this.hideError = this.hideError.bind(this);
+    this.hideErrorBox = this.hideErrorBox.bind(this);
+    this.onDrop = this.onDrop.bind(this);
+    this.renderFilePreviews = this.renderFilePreviews.bind(this);
   }
 
   componentDidMount() {
@@ -25,7 +29,7 @@ class App extends Component {
     firebase.initializeApp(config);
   }
 
-  hideError() {
+  hideErrorBox() {
     this.refs.errorBox.hide();
   }
 
@@ -48,9 +52,38 @@ class App extends Component {
     });
   }
 
-  render() {
-    const { user } = this.state;
+  onDrop(acceptedFiles) {
+    const { droppedFiles } = this.state;
 
+    acceptedFiles.forEach((file) => {
+      droppedFiles.push(file);
+    });
+
+    this.setState({
+      droppedFiles
+    });
+  }
+
+  renderFilePreviews() {
+    const { droppedFiles } = this.state;
+
+    return droppedFiles.map((file, index) =>
+      <div
+        className="file-preview"
+        key={index}
+      >
+        <img
+          src={file.preview}
+          alt={file.name}
+        />
+        <span>{file.name}</span>
+      </div>
+    );
+  }
+
+  render() {
+    const { user, droppedFiles } = this.state;
+    console.log('obj', droppedFiles);
     return (
       <div className="App">
         <div className="main-content">
@@ -96,23 +129,20 @@ class App extends Component {
           }
 
 
-          {/* <button
-            onClick={() => {
-              const provider = new firebase.auth.GoogleAuthProvider();
+          {user &&
+            <div className="dropzone-container">
+              <Dropzone
+                onDrop={this.onDrop}
+                className="dropzone"
+              >
+                {(droppedFiles.length !== 0) ?
+                  this.renderFilePreviews() :
+                    <p>Try dropping some files here, or click to select files to upload.</p>
+                }
 
-              firebase.auth().signInWithPopup(provider).then((result) => {
-                const token = result.credential.accessToken;
-                const user = result.user;
-                console.log('d', result);
-              }).catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                const email = error.email;
-                const credential = error.credential;
-                console.log('d', error);
-              });
-            }}
-          >G SignIn</button> */}
+              </Dropzone>
+            </div>
+          }
         </div>
 
         <Modal
@@ -126,7 +156,7 @@ class App extends Component {
             <h4>Oops!</h4>
             <p>Something went wrong! Please try again.</p>
             <button
-              onClick={this.hideError}
+              onClick={this.hideErrorBox}
             >Ok</button>
           </div>
         </Modal>
