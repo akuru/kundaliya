@@ -64,3 +64,19 @@ body {
 
 .main-content .signin-container .signin-btn.github {
   border: 2px solid #111111; }
+
+.error-box {
+  color: #333745;
+  padding: 15px;
+  text-align: center;
+  border-radius: 5px; }
+
+.error-box h4 {
+  margin: 0;
+  font-size: 1.5rem; }
+
+.error-box button {
+  padding: 6px 44px;
+  background: none;
+  border: 1px solid #333745;
+  cursor: pointer; }

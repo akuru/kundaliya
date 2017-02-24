@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as firebase from 'firebase';
+import Modal from 'boron/OutlineModal';
 
 class App extends Component {
   constructor(props) {
@@ -10,6 +11,7 @@ class App extends Component {
     };
 
     this.googleSignIn = this.googleSignIn.bind(this);
+    this.hideError = this.hideError.bind(this);
   }
 
   componentDidMount() {
@@ -23,7 +25,11 @@ class App extends Component {
     firebase.initializeApp(config);
   }
 
-  googleSignIn(){
+  hideError() {
+    this.refs.errorBox.hide();
+  }
+
+  googleSignIn() {
     const provider = new firebase.auth.GoogleAuthProvider();
 
     firebase.auth().signInWithPopup(provider).then((result) => {
@@ -37,12 +43,8 @@ class App extends Component {
           email: user.email
         }
       });
-    }).catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      const email = error.email;
-      const credential = error.credential;
-      console.log('d', error);
+    }).catch(() => {
+      this.refs.errorBox.show();
     });
   }
 
@@ -64,7 +66,9 @@ class App extends Component {
               Make your Own Kundaliya: Share your version of Sinhala Kundaliya
             </span>
           </div>
+
           <br />
+
           {!user &&
             <div className="signin-container">
               <div className="signin-text">
@@ -111,7 +115,21 @@ class App extends Component {
           >G SignIn</button> */}
         </div>
 
-
+        <Modal
+          ref="errorBox"
+          keyboard={this.callback}
+          modalStyle={{
+            backgroundColor: 'transparent'
+          }}
+        >
+          <div className="error-box">
+            <h4>Oops!</h4>
+            <p>Something went wrong! Please try again.</p>
+            <button
+              onClick={this.hideError}
+            >Ok</button>
+          </div>
+        </Modal>
       </div>
     );
   }
