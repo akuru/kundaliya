@@ -1,4 +1,76 @@
+html {
+  font-family: 'YaldeviColombo', serif;
+  font-size: 16px;
+  min-height: 100vh;
+  background-color: #333745;
+  color: #ffffff;
+}
+
 body {
   margin: 0;
   padding: 0;
+}
+
+.App {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+}
+
+.main-content {
+  margin: auto;
+  text-align: center;
+  padding: 20px;
+
+  .app-title {
+    font-size: 2.5rem;
+  }
+
+  .kunadliya-description {
+    max-width: 786px;
+  }
+
+  .kundaliya {
+    font-size: 3rem;
+    margin: 9px;
+  }
+
+  .app-description-text {
+    color: #333745;
+    background-color: #F6F792;
+    padding: 2px 6px;
+    font-size: 1.2rem;
+  }
+
+  .signin-container {
+    .signin-text {
+      margin-bottom: 10px;
+      margin-top: 5px;
+    }
+
+    .signin-btn {
+      padding: 9px 28px;
+      background-color: transparent;
+      border: 2px solid #ffffff;
+      border-radius: 30px;
+      color: #fff;
+      margin: 4px;
+
+      .fa {
+        margin-right: 7px;
+      }
+
+      &.google {
+        border: 2px solid #dd4b39;
+      }
+
+      &.facebook {
+        border: 2px solid #3b5998;
+      }
+
+      &.github {
+        border: 2px solid #111111;
+      }
+    }
+  }
 }
