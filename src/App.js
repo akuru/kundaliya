@@ -23,15 +23,16 @@ class App extends Component {
     this.clearDrop = this.clearDrop.bind(this);
     this.uploadFiles = this.uploadFiles.bind(this);
     this.signOut = this.signOut.bind(this);
+    this.facebookSignIn = this.facebookSignIn.bind(this);
   }
 
   componentDidMount() {
     const config = {
-      apiKey: 'AIzaSyCHJ_1he6bthXCTMU6r6pXPmcULyqtMFDU',
-      authDomain: 'kundaliya-test.firebaseapp.com',
-      databaseURL: 'https://kundaliya-test.firebaseio.com',
-      storageBucket: 'kundaliya-test.appspot.com',
-      messagingSenderId: '599295915329'
+      apiKey: 'AIzaSyA87qw3ZxOIPssAos11at-nV9e4g0Yr_68',
+      authDomain: 'kundaliya-7cee6.firebaseapp.com',
+      databaseURL: 'https://kundaliya-7cee6.firebaseio.com',
+      storageBucket: 'kundaliya-7cee6.appspot.com',
+      messagingSenderId: '813031245764'
     };
     firebase.initializeApp(config);
   }
@@ -42,6 +43,25 @@ class App extends Component {
 
   googleSignIn() {
     const provider = new firebase.auth.GoogleAuthProvider();
+
+    firebase.auth().signInWithPopup(provider).then((result) => {
+      const user = result.user;
+
+      this.setState({
+        user: {
+          uid: user.uid,
+          avatar: user.photoURL,
+          name: user.displayName,
+          email: user.email
+        }
+      });
+    }).catch(() => {
+      this.refs.errorBox.show();
+    });
+  }
+
+  facebookSignIn() {
+    const provider = new firebase.auth.FacebookAuthProvider();
 
     firebase.auth().signInWithPopup(provider).then((result) => {
       const user = result.user;
@@ -136,9 +156,8 @@ class App extends Component {
           if (snapshot.a) {
             const database = firebase.database();
 
-            database.ref(`uploads/${user.uid}`).set({
-              username: user.name,
-              email: user.email,
+            database.ref(`uploads/${fileName}`).set({
+              userId: user.uid,
               fileName,
               filePath: snapshot.a.fullPath,
               downloadURLs: snapshot.a.downloadURLs,
@@ -188,7 +207,10 @@ class App extends Component {
                 Sign in with Google
               </button>
 
-              <button className="signin-btn facebook">
+              <button
+                className="signin-btn facebook"
+                onClick={this.facebookSignIn}
+              >
                 <i className="fa fa-facebook" aria-hidden="true" />
                 Sign in with Facebook
               </button>
