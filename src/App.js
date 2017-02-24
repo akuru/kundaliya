@@ -2,6 +2,16 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      user: null
+    };
+
+    this.googleSignIn = this.googleSignIn.bind(this);
+  }
+
   componentDidMount() {
     const config = {
       apiKey: 'AIzaSyCHJ_1he6bthXCTMU6r6pXPmcULyqtMFDU',
@@ -13,7 +23,32 @@ class App extends Component {
     firebase.initializeApp(config);
   }
 
+  googleSignIn(){
+    const provider = new firebase.auth.GoogleAuthProvider();
+
+    firebase.auth().signInWithPopup(provider).then((result) => {
+      const user = result.user;
+
+      this.setState({
+        user: {
+          uid: user.uid,
+          avatar: user.photoURL,
+          name: user.displayName,
+          email: user.email
+        }
+      });
+    }).catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      const email = error.email;
+      const credential = error.credential;
+      console.log('d', error);
+    });
+  }
+
   render() {
+    const { user } = this.state;
+
     return (
       <div className="App">
         <div className="main-content">
@@ -30,26 +65,31 @@ class App extends Component {
             </span>
           </div>
           <br />
-          <div className="signin-container">
-            <div className="signin-text">
-              <span>Please sign in first :</span>
+          {!user &&
+            <div className="signin-container">
+              <div className="signin-text">
+                <span>Please sign in first...</span>
+              </div>
+
+              <button
+                className="signin-btn google"
+                onClick={this.googleSignIn}
+              >
+                <i className="fa fa-google" aria-hidden="true" />
+                Sign in with Google
+              </button>
+
+              <button className="signin-btn facebook">
+                <i className="fa fa-facebook" aria-hidden="true" />
+                Sign in with Facebook
+              </button>
+
+              <button className="signin-btn github">
+                <i className="fa fa-github-alt" aria-hidden="true" />
+                Sign in with GitHub
+              </button>
             </div>
-
-            <button className="signin-btn google">
-              <i className="fa fa-google" aria-hidden="true" />
-              Sign in with Google
-            </button>
-
-            <button className="signin-btn facebook">
-              <i className="fa fa-facebook" aria-hidden="true" />
-              Sign in with Facebook
-            </button>
-
-            <button className="signin-btn github">
-              <i className="fa fa-github-alt" aria-hidden="true" />
-              Sign in with GitHub
-            </button>
-          </div>
+          }
 
 
           {/* <button

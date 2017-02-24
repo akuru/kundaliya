@@ -10,8 +10,12 @@ body {
   padding: 0; }
 
 .App {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   min-height: 100vh;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center; }
 
 .main-content {
@@ -45,7 +49,9 @@ body {
   border: 2px solid #ffffff;
   border-radius: 30px;
   color: #fff;
-  margin: 4px; }
+  margin: 4px;
+  outline: 0;
+  cursor: pointer; }
 
 .main-content .signin-container .signin-btn .fa {
   margin-right: 7px; }
