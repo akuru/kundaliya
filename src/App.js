@@ -13,7 +13,8 @@ class App extends Component {
     this.state = {
       user: null,
       droppedFiles: [],
-      uploading: ''
+      uploading: '',
+      error: 'Something went wrong! Please try again.'
     };
 
     this.googleSignIn = this.googleSignIn.bind(this);
@@ -24,6 +25,7 @@ class App extends Component {
     this.uploadFiles = this.uploadFiles.bind(this);
     this.signOut = this.signOut.bind(this);
     this.facebookSignIn = this.facebookSignIn.bind(this);
+    this.githubSignIn = this.githubSignIn.bind(this);
   }
 
   componentDidMount() {
@@ -39,6 +41,10 @@ class App extends Component {
 
   hideErrorBox() {
     this.refs.errorBox.hide();
+
+    this.setState({
+      error: 'Something went wrong! Please try again.'
+    });
   }
 
   googleSignIn() {
@@ -55,7 +61,13 @@ class App extends Component {
           email: user.email
         }
       });
-    }).catch(() => {
+    }).catch((error) => {
+      if (error && error.message) {
+        this.setState({
+          error: error.message
+        });
+      }
+
       this.refs.errorBox.show();
     });
   }
@@ -74,7 +86,38 @@ class App extends Component {
           email: user.email
         }
       });
-    }).catch(() => {
+    }).catch((error) => {
+      if (error && error.message) {
+        this.setState({
+          error: error.message
+        });
+      }
+
+      this.refs.errorBox.show();
+    });
+  }
+
+  githubSignIn() {
+    const provider = new firebase.auth.GithubAuthProvider();
+
+    firebase.auth().signInWithPopup(provider).then((result) => {
+      const user = result.user;
+
+      this.setState({
+        user: {
+          uid: user.uid,
+          avatar: user.photoURL,
+          name: user.displayName,
+          email: user.email
+        }
+      });
+    }).catch((error) => {
+      if (error && error.message) {
+        this.setState({
+          error: error.message
+        });
+      }
+
       this.refs.errorBox.show();
     });
   }
@@ -174,7 +217,7 @@ class App extends Component {
   }
 
   render() {
-    const { user, droppedFiles, uploading } = this.state;
+    const { user, droppedFiles, uploading, error } = this.state;
     return (
       <div className="App">
         <div className="main-content">
@@ -215,7 +258,10 @@ class App extends Component {
                 Sign in with Facebook
               </button>
 
-              <button className="signin-btn github">
+              <button
+                className="signin-btn github"
+                onClick={this.githubSignIn}
+              >
                 <i className="fa fa-github-alt" aria-hidden="true" />
                 Sign in with GitHub
               </button>
@@ -263,7 +309,7 @@ class App extends Component {
         >
           <div className="error-box">
             <h4>Oops!</h4>
-            <p>Something went wrong! Please try again.</p>
+            <p>{error}</p>
             <button
               onClick={this.hideErrorBox}
             >Ok</button>
