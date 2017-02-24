@@ -5,6 +5,7 @@ import Dropzone from 'react-dropzone';
 import uuid from 'uuid/v4';
 import ProgressButton from 'react-progress-button';
 import notie from 'notie';
+import _ from 'lodash';
 
 class App extends Component {
   constructor(props) {
@@ -14,7 +15,8 @@ class App extends Component {
       user: null,
       droppedFiles: [],
       uploading: '',
-      error: 'Something went wrong! Please try again.'
+      error: 'Something went wrong! Please try again.',
+      images: []
     };
 
     this.googleSignIn = this.googleSignIn.bind(this);
@@ -29,6 +31,13 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // const config = {
+    //   apiKey: 'AIzaSyCHJ_1he6bthXCTMU6r6pXPmcULyqtMFDU',
+    //   authDomain: 'kundaliya-test.firebaseapp.com',
+    //   databaseURL: 'https://kundaliya-test.firebaseio.com',
+    //   storageBucket: 'kundaliya-test.appspot.com',
+    //   messagingSenderId: '599295915329'
+    // };
     const config = {
       apiKey: 'AIzaSyA87qw3ZxOIPssAos11at-nV9e4g0Yr_68',
       authDomain: 'kundaliya-7cee6.firebaseapp.com',
@@ -37,6 +46,28 @@ class App extends Component {
       messagingSenderId: '813031245764'
     };
     firebase.initializeApp(config);
+
+    const fetchImages = () => {
+      firebase.database().ref('uploads/').on('value', (fetchedData) => {
+        const images = fetchedData.val();
+
+        this.setState({
+          images
+        });
+
+        const $ = window.$;
+
+        $('#gallery').justifiedGallery({
+          rowHeight: 140
+        });
+      });
+    };
+
+    fetchImages();
+
+    window.setInterval(() => {
+      fetchImages();
+    }, 60000);
   }
 
   hideErrorBox() {
@@ -180,15 +211,13 @@ class App extends Component {
       });
 
       const storageRef = firebase.storage().ref();
-      const fileName = `${user.uid}-${uuid()}`;
+
 
       droppedFiles.forEach((file) => {
-        // Create a reference to 'mountains.jpg'
+        const fileName = `${user.uid}-${uuid()}`;
+
         const fileRef = storageRef.child(fileName);
 
-      //  const fileToUpload = Object.assign({}, file, {name: fileName} );
-
-        // var file = file;
         fileRef.put(file).then((snapshot) => {
           this.setState({
             uploading: '',
@@ -217,7 +246,10 @@ class App extends Component {
   }
 
   render() {
-    const { user, droppedFiles, uploading, error } = this.state;
+    const { user, droppedFiles, uploading, error, images } = this.state;
+
+    const imagesArray = _.values(images);
+
     return (
       <div className="App">
         <div className="main-content">
@@ -296,6 +328,24 @@ class App extends Component {
               </div>
               <div className="session-actions">
                 <button className="logout" onClick={this.signOut}>Logout</button>
+              </div>
+            </div>
+          }
+
+          {imagesArray.length !== 0 &&
+            <div className="gallery">
+              <br />
+              <div id="gallery">
+                {imagesArray.map((image, index) =>
+                  <a
+                    key={index}
+                    href={image.downloadURL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="image"
+                  >
+                    <img src={image.downloadURL} alt="" />
+                  </a>)}
               </div>
             </div>
           }

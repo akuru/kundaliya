@@ -118,3 +118,6 @@ body {
     background: none;
     border: 1px solid #333745;
     cursor: pointer; }
+
+.gallery img {
+  height: 360px; }
