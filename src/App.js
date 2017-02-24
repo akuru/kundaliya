@@ -16,6 +16,7 @@ class App extends Component {
     this.hideErrorBox = this.hideErrorBox.bind(this);
     this.onDrop = this.onDrop.bind(this);
     this.renderFilePreviews = this.renderFilePreviews.bind(this);
+    this.clearDrop = this.clearDrop.bind(this);
   }
 
   componentDidMount() {
@@ -81,6 +82,12 @@ class App extends Component {
     );
   }
 
+  clearDrop() {
+    this.setState({
+      droppedFiles: []
+    });
+  }
+
   render() {
     const { user, droppedFiles } = this.state;
     console.log('obj', droppedFiles);
@@ -135,6 +142,7 @@ class App extends Component {
                 onDrop={this.onDrop}
                 className="dropzone"
                 activeClassName="dropzone-active"
+                accept="image/*"
               >
                 {(droppedFiles.length !== 0) ?
                   this.renderFilePreviews() :
@@ -142,10 +150,10 @@ class App extends Component {
                 }
 
               </Dropzone>
-              <br/>
+              <br />
               <div className="drop-actions">
                 <button className="upload">Upload</button>
-                <button className="clear">Clear</button>
+                <button className="clear" onClick={this.clearDrop}>Clear</button>
               </div>
               <div className="session-actions">
                 <button className="logout">Logout</button>
