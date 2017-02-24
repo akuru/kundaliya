@@ -94,6 +94,7 @@ body {
     align-items: center;
     text-align: center;
     display: flex;
+    -ms-flex-wrap: wrap;
     flex-wrap: wrap;
 
     .file-preview {
@@ -109,6 +110,43 @@ body {
       text-align: center;
       margin: auto;
     }
+  }
+
+  .dropzone-active {
+    border: 2px dashed #77C4D3;
+  }
+
+  .drop-actions {
+    button {
+      background: none;
+      border: 2px solid #fff;
+      outline: none;
+      width: 152px;
+      padding: 6px;
+      border-radius: 26px;
+      color: #fff;
+      margin: 0 10px;
+      cursor: pointer;
+    }
+
+    .upload {
+      border: 2px solid #F6F792;
+      color: #F6F792;
+    }
+
+    .clear {
+      border: 2px solid #dddddd;
+      color: #dddddd;
+    }
+  }
+
+  .logout {
+    margin-top: 20px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid #ffffff;
+    color: #ffffff;
+    cursor: pointer;
   }
 }
 

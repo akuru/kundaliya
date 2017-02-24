@@ -79,6 +79,7 @@ body {
   align-items: center;
   text-align: center;
   display: flex;
+  -ms-flex-wrap: wrap;
   flex-wrap: wrap; }
 
 .main-content .dropzone .file-preview {
@@ -91,6 +92,36 @@ body {
 .main-content .dropzone p {
   text-align: center;
   margin: auto; }
+
+.main-content .dropzone-active {
+  border: 2px dashed #77C4D3; }
+
+.main-content .drop-actions button {
+  background: none;
+  border: 2px solid #fff;
+  outline: none;
+  width: 152px;
+  padding: 6px;
+  border-radius: 26px;
+  color: #fff;
+  margin: 0 10px;
+  cursor: pointer; }
+
+.main-content .drop-actions .upload {
+  border: 2px solid #F6F792;
+  color: #F6F792; }
+
+.main-content .drop-actions .clear {
+  border: 2px solid #dddddd;
+  color: #dddddd; }
+
+.main-content .logout {
+  margin-top: 20px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid #ffffff;
+  color: #ffffff;
+  cursor: pointer; }
 
 .error-box {
   color: #333745;

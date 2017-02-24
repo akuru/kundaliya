@@ -134,6 +134,7 @@ class App extends Component {
               <Dropzone
                 onDrop={this.onDrop}
                 className="dropzone"
+                activeClassName="dropzone-active"
               >
                 {(droppedFiles.length !== 0) ?
                   this.renderFilePreviews() :
@@ -141,6 +142,14 @@ class App extends Component {
                 }
 
               </Dropzone>
+              <br/>
+              <div className="drop-actions">
+                <button className="upload">Upload</button>
+                <button className="clear">Clear</button>
+              </div>
+              <div className="session-actions">
+                <button className="logout">Logout</button>
+              </div>
             </div>
           }
         </div>
