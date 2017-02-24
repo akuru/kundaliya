@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import * as firebase from 'firebase';
 import Modal from 'boron/OutlineModal';
 import Dropzone from 'react-dropzone';
+import uuid from 'uuid/v4';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      user: {},
+      user: null,
       droppedFiles: []
     };
 
@@ -17,6 +18,7 @@ class App extends Component {
     this.onDrop = this.onDrop.bind(this);
     this.renderFilePreviews = this.renderFilePreviews.bind(this);
     this.clearDrop = this.clearDrop.bind(this);
+    this.uploadFiles = this.uploadFiles.bind(this);
   }
 
   componentDidMount() {
@@ -88,9 +90,38 @@ class App extends Component {
     });
   }
 
+  uploadFiles() {
+    const { droppedFiles, user } = this.state;
+
+    const storageRef = firebase.storage().ref();
+    const fileName = `${user.uid}-${uuid()}`;
+
+    droppedFiles.forEach((file) => {
+      // Create a reference to 'mountains.jpg'
+      const fileRef = storageRef.child(fileName);
+
+    //  const fileToUpload = Object.assign({}, file, {name: fileName} );
+
+      // var file = file;
+      fileRef.put(file).then((snapshot) => {
+        if (snapshot) {
+          const database = firebase.database();
+
+          database.ref(`uploads/${user.uid}`).set({
+            username: user.name,
+            email: user.email,
+            fileName,
+            filePath: snapshot.a.fullPath,
+            downloadURLs: snapshot.a.downloadURLs,
+            downloadURL: snapshot.a.downloadURLs[0]
+          });
+        }
+      });
+    });
+  }
+
   render() {
     const { user, droppedFiles } = this.state;
-    console.log('obj', droppedFiles);
     return (
       <div className="App">
         <div className="main-content">
@@ -152,7 +183,7 @@ class App extends Component {
               </Dropzone>
               <br />
               <div className="drop-actions">
-                <button className="upload">Upload</button>
+                <button className="upload" onClick={this.uploadFiles}>Upload</button>
                 <button className="clear" onClick={this.clearDrop}>Clear</button>
               </div>
               <div className="session-actions">
