@@ -164,3 +164,16 @@ body {
 
 .gallery img {
   height: 360px; }
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background-color: #333745;
+  padding: 10px;
+  opacity: 0.9;
+  font-size: 12px; }
+
+footer a {
+  color: #F6F792; }

@@ -370,7 +370,6 @@ class App extends Component {
             </div>
           }
 
-
           {user &&
             <div className="dropzone-container">
               <Dropzone
@@ -442,6 +441,21 @@ class App extends Component {
             >Ok</button>
           </div>
         </Modal>
+
+        <footer>
+          <div className="credits">
+            <i className="fa fa-terminal" aria-hidden="true" />
+            &nbsp;
+            <i className="fa fa-heart" aria-hidden="true" />
+            &nbsp;Developed by&nbsp;
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href="http://leafycode.com/"
+            >LeafyCode</a>
+            &nbsp;for the Akuru Collective
+          </div>
+        </footer>
       </div>
     );
   }
