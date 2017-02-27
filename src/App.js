@@ -230,6 +230,7 @@ class App extends Component {
 
             database.ref(`uploads/${fileName}`).set({
               userId: user.uid,
+              userName: user.name,
               fileName,
               filePath: snapshot.a.fullPath,
               downloadURLs: snapshot.a.downloadURLs,
