@@ -98,15 +98,6 @@ body {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
 
-    .file-preview {
-      width: 120px;
-      margin: 6px;
-
-      img {
-        width: 100%;
-      }
-    }
-
     p {
       text-align: center;
       margin: auto;
@@ -143,6 +134,42 @@ body {
     }
   }
 
+  .file-preview {
+    width: 100%;
+    margin: 16px 0;
+    overflow: hidden;
+
+    .file-preview-box {
+      width: 120px;
+      float: left;
+    }
+
+    .file-details {
+      width: calc(100% - 140px);
+      float: left;
+      padding-left: 20px;
+
+      .file-form {
+        input,
+        textarea {
+          width: 100%;
+          background: transparent;
+          border: none;
+          margin-bottom: 11px;
+          border-bottom: 2px solid #ffffff;
+          padding: 7px;
+          outline: 0;
+          color: #fff;
+          font-family: 'YaldeviColombo', serif;
+        }
+      }
+    }
+
+    img {
+      width: 100%;
+    }
+  }
+
   .logout {
     margin-top: 20px;
     background: none;
@@ -171,8 +198,9 @@ body {
     cursor: pointer;
   }
 }
-.gallery{
-  img{
-        height: 360px;
+
+.gallery {
+  img {
+    height: 360px;
   }
 }

@@ -16,7 +16,8 @@ class App extends Component {
       droppedFiles: [],
       uploading: '',
       error: 'Something went wrong! Please try again.',
-      images: []
+      images: [],
+      fileMeta: {}
     };
 
     this.googleSignIn = this.googleSignIn.bind(this);
@@ -28,6 +29,8 @@ class App extends Component {
     this.signOut = this.signOut.bind(this);
     this.facebookSignIn = this.facebookSignIn.bind(this);
     this.githubSignIn = this.githubSignIn.bind(this);
+    this.updateFileTitle = this.updateFileTitle.bind(this);
+    this.updateFileDescription = this.updateFileDescription.bind(this);
   }
 
   componentDidMount() {
@@ -171,11 +174,15 @@ class App extends Component {
     const { droppedFiles } = this.state;
 
     acceptedFiles.forEach((file) => {
-      droppedFiles.push(file);
+      const fileExist = droppedFiles.find(droppedFile => droppedFile.name === file.name);
+
+      if (!fileExist) {
+        droppedFiles.push(file);
+      }
     });
 
     this.setState({
-      droppedFiles
+      droppedFiles: _.uniq(droppedFiles)
     });
   }
 
@@ -187,11 +194,29 @@ class App extends Component {
         className="file-preview"
         key={index}
       >
-        <img
-          src={file.preview}
-          alt={file.name}
-        />
-        <span>{file.name}</span>
+        <div className="file-preview-box">
+          <img
+            src={file.preview}
+            alt={file.name}
+          />
+          <span>{file.name}</span>
+        </div>
+        <div className="file-details">
+          <div className="file-form">
+            <input
+              type="text"
+              placeholder="Title"
+              onChange={event => this.updateFileTitle(file.name, event.target.value)}
+            />
+            <textarea
+              placeholder="Description"
+              cols="20"
+              rows="3"
+              onChange={event => this.updateFileDescription(file.name, event.target.value)}
+            />
+          </div>
+
+        </div>
       </div>
     );
   }
@@ -203,7 +228,7 @@ class App extends Component {
   }
 
   uploadFiles() {
-    const { droppedFiles, user } = this.state;
+    const { droppedFiles, user, fileMeta } = this.state;
 
     if (droppedFiles.length !== 0) {
       this.setState({
@@ -228,14 +253,28 @@ class App extends Component {
           if (snapshot.a) {
             const database = firebase.database();
 
-            database.ref(`uploads/${fileName}`).set({
+            const fileData = {
               userId: user.uid,
               userName: user.name,
               fileName,
               filePath: snapshot.a.fullPath,
               downloadURLs: snapshot.a.downloadURLs,
-              downloadURL: snapshot.a.downloadURLs[0]
-            });
+              downloadURL: snapshot.a.downloadURLs[0],
+              title: '',
+              description: ''
+            };
+
+            const currentFileMeta = fileMeta[file.name];
+
+            if (currentFileMeta && currentFileMeta.title) {
+              fileData.title = currentFileMeta.title;
+            }
+
+            if (currentFileMeta && currentFileMeta.description) {
+              fileData.description = currentFileMeta.description;
+            }
+
+            database.ref(`uploads/${fileName}`).set(fileData);
 
             notie.alert(1, 'Files uploaded successfully!', 5);
           } else {
@@ -244,6 +283,36 @@ class App extends Component {
         });
       });
     }
+  }
+
+  updateFileTitle(fileName, value) {
+    const { fileMeta } = this.state;
+
+    const existingMeta = fileMeta[fileName];
+
+    fileMeta[fileName] = {
+      ...existingMeta,
+      title: value
+    };
+
+    this.setState({
+      fileMeta
+    });
+  }
+
+  updateFileDescription(fileName, value) {
+    const { fileMeta } = this.state;
+
+    const existingMeta = fileMeta[fileName];
+
+    fileMeta[fileName] = {
+      ...existingMeta,
+      description: value
+    };
+
+    this.setState({
+      fileMeta
+    });
   }
 
   render() {
@@ -310,12 +379,12 @@ class App extends Component {
                 activeClassName="dropzone-active"
                 accept="image/*"
               >
-                {(droppedFiles.length !== 0) ?
-                  this.renderFilePreviews() :
-                    <p>Try dropping some files here, or click to select files to upload.</p>
-                }
-
+                <p>Try dropping some files here, or click to select files to upload.</p>
               </Dropzone>
+              <br />
+              {(droppedFiles.length !== 0) &&
+                this.renderFilePreviews()
+              }
               <br />
               <div className="drop-actions">
                 <ProgressButton
@@ -344,8 +413,15 @@ class App extends Component {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="image"
+                    data-lightbox="gallery"
+                    data-title={`${image.title}${image.title && ' '}By ${image.userName}. ` +
+                    `${image.description}`}
                   >
-                    <img src={image.downloadURL} alt="" />
+                    <img
+                      src={image.downloadURL}
+                      alt={`${image.title}${image.title && ' '}By ${image.userName}. ` +
+                      `${image.description}`}
+                    />
                   </a>)}
               </div>
             </div>
