@@ -7,3 +7,5 @@ The Mooniak Kundaliya. **© 2017** Mooniak (`All rights reserved`).
 ![Kundaliya](https://upload.wikimedia.org/wikipedia/commons/5/5d/%E0%B6%9A%E0%B7%94%E0%B6%AB%E0%B7%8A%E0%B6%A9%E0%B6%BD%E0%B7%92%E0%B6%BA.png)
 
   - 1.0.0 : Initial release
+
+*:fire: Developed by ![LeafyCode](http://leafycode.com/) for the Akuru Collective*
