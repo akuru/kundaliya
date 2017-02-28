@@ -8,4 +8,5 @@ The Mooniak Kundaliya. **© 2017** Mooniak (`All rights reserved`).
 
   - 1.0.0 : Initial release
 
-*:fire: Developed by ![LeafyCode](http://leafycode.com/) for the Akuru Collective*
+*:fire: Developed by [LeafyCode](http://leafycode.com/) for the Akuru Collective*
+U
